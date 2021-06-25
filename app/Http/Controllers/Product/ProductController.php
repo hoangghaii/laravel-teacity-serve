@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Product;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\model\Product;
+use App\Model\Product;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
