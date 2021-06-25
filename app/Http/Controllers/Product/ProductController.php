@@ -23,7 +23,7 @@ class ProductController extends Controller
             return response()->json(['error' => $validator->errors()], 404);
         }
         $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move(base_path() . '/storage/app/public', $resume);
+        $request->file('image')->move('https://teacity-serve.herokuapp.com/storage/app/public', $resume);
         $product = new Product($request->all());
         $product->image = $resume;
         $product->save();
