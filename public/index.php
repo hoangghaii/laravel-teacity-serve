@@ -88,3 +88,7 @@ $app->get('/db/', function () use ($app) {
         'names' => $names
     ));
 });
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    return $error;
+}
