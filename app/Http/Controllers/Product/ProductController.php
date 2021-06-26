@@ -23,7 +23,7 @@ class ProductController extends Controller
             return response()->json(['error' => $validator->errors()], 404);
         }
         $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move(base_path() . '/storage/app/public', $resume);
+        $request->file('image')->move(base_path() . '/storage/app/public/', $resume);
         $product = new Product($request->all());
         $product->image = $resume;
         $product->save();
@@ -33,7 +33,7 @@ class ProductController extends Controller
     {
         $listProduct =  Product::all();
         foreach ($listProduct as $key) {
-            $key['image'] = env('APP_URL') . '/storage/app/public' . $key['image'];
+            $key['image'] = env('APP_URL') . '/storage/app/public/' . $key['image'];
         }
         return $listProduct;
     }
@@ -60,7 +60,7 @@ class ProductController extends Controller
         unlink(storage_path('app/public/' . $product->image));
 
         $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move(base_path() . '/storage/app/public', $resume);
+        $request->file('image')->move(base_path() . '/storage/app/public/', $resume);
 
         $product->description = $request->description;
         $product->name = $request->name;
