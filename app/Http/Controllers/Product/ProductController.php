@@ -25,7 +25,7 @@ class ProductController extends Controller
         $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         echo $actual_link;
         $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move(storage_path('app/public/'), $resume);
+        $request->file('image')->move($actual_link, $resume);
         $product = new Product($request->all());
         $product->image = $resume;
         $product->save();
