@@ -24,7 +24,7 @@ class ProductController extends Controller
         }
         $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
         $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move($actual_link . '/public/storage/', $resume);
+        $request->file('image')->move(public_path()  . '/storage/public/', $resume);
         $product = new Product($request->all());
         $product->image = $resume;
         $product->save();
@@ -35,7 +35,7 @@ class ProductController extends Controller
         $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
         $listProduct =  Product::all();
         foreach ($listProduct as $key) {
-            $key['image'] = $actual_link . '/public/storage/' . $key['image'];
+            $key['image'] = public_path() . '/storage/public/' . $key['image'];
         }
         return $listProduct;
     }
