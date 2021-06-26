@@ -23,9 +23,9 @@ class ProductController extends Controller
             return response()->json(['error' => $validator->errors()], 404);
         }
         $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
-        echo $actual_link;
+
         $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move($actual_link, $resume);
+        $request->file('image')->move($actual_link . '/storage/app/public/', $resume);
         $product = new Product($request->all());
         $product->image = $resume;
         $product->save();
