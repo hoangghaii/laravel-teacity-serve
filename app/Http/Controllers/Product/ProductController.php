@@ -23,7 +23,6 @@ class ProductController extends Controller
             return response()->json(['error' => $validator->errors()], 404);
         }
         $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
-
         $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
         $request->file('image')->move($actual_link . '/storage/app/public/', $resume);
         $product = new Product($request->all());
@@ -33,9 +32,10 @@ class ProductController extends Controller
     }
     public function index()
     {
+        $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
         $listProduct =  Product::all();
         foreach ($listProduct as $key) {
-            $key['image'] = storage_path('app/public/') . $key['image'];
+            $key['image'] = $actual_link . '/storage/app/public/' . $key['image'];
         }
         return $listProduct;
     }
