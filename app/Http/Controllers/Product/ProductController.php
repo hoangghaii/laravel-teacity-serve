@@ -33,7 +33,7 @@ class ProductController extends Controller
     {
         $listProduct =  Product::all();
         foreach ($listProduct as $key) {
-            $key['image'] = env('APP_URL') . '/storage/' . $key['image'];
+            $key['image'] = env('APP_URL') . '/storage/app/public' . $key['image'];
         }
         return $listProduct;
     }
