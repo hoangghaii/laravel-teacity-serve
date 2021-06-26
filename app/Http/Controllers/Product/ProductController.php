@@ -35,7 +35,7 @@ class ProductController extends Controller
         $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
         $listProduct =  Product::all();
         foreach ($listProduct as $key) {
-            $key['image'] = public_path($actual_link) . '/storage/' . $key['image'];
+            $key['image'] = $actual_link . storage_path() . '/storage/' . $key['image'];
         }
         return $listProduct;
     }
