@@ -53,7 +53,7 @@ class ProductController extends Controller
         // $product->image = $request->image;
         // $product->save();
         // return  response()->json($product);
-        return $request->$_FILES['image'];
+        return $request->file('image');
     }
 
     public function index()
