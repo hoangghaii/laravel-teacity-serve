@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers\Product;
 
+require 'vendor/autoload.php';
+
+use Aws\S3\S3Client;
+use Aws\Exception\AwsException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Product;
 use Illuminate\Support\Facades\Validator;
 
-//http://s3.amazonaws.com/teacity-storage-image/filename
-$urlStotageImage = 'http://s3.amazonaws.com/teacity-storage-image';
-
-
-
 class ProductController extends Controller
 {
     public function store(Request $request)
     {
-        $s3Client = new Aws\S3\S3Client([
+        $s3Client = new S3Client([
             'version'     => 'latest',
             'region'      => 'us-east-2', //Region of the bucket
             'credentials' => array(
@@ -58,7 +57,7 @@ class ProductController extends Controller
     }
     public function index()
     {
-        $s3Client = new Aws\S3\S3Client([
+        $s3Client = new S3Client([
             'version'     => 'latest',
             'region'      => 'us-east-2', //Region of the bucket
             'credentials' => array(
