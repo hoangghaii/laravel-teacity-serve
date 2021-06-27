@@ -7,10 +7,24 @@ use App\Http\Controllers\Controller;
 use App\Model\Product;
 use Illuminate\Support\Facades\Validator;
 
+//http://s3.amazonaws.com/teacity-storage-image/filename
+$urlStotageImage = 'http://s3.amazonaws.com/teacity-storage-image';
+
+
+
 class ProductController extends Controller
 {
     public function store(Request $request)
     {
+        $s3Client = new Aws\S3\S3Client([
+            'version'     => 'latest',
+            'region'      => 'us-east-2', //Region of the bucket
+            'credentials' => array(
+                'key' => 'AKIA4NZLDOQGJT6PZ77C',
+                'secret'  => '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',
+            )
+        ]);
+
         $validator = Validator::make($request->all(), [
             'description' => 'required|string',
             'name' => 'required|string',
@@ -22,8 +36,21 @@ class ProductController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 404);
         }
-        $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move(base_path() . '/storage/app/public/', $resume);
+        $resume = $request->file('image');
+
+        // $request->file('image')->move(base_path() . '/storage/app/public/', $resume);
+        //Get a command to GetObject
+        $cmd = $s3Client->getCommand('GetObject', [
+            'Bucket' => 'teacity-storage-image',
+            'Key'    => $resume
+        ]);
+
+        //The period of availability
+        $request = $s3Client->createPresignedRequest($cmd, '+10 minutes');
+
+        //Get the pre-signed URL
+        $signedUrl = (string) $request->getUri();
+
         $product = new Product($request->all());
         $product->image = $resume;
         $product->save();
@@ -31,9 +58,32 @@ class ProductController extends Controller
     }
     public function index()
     {
+        $s3Client = new Aws\S3\S3Client([
+            'version'     => 'latest',
+            'region'      => 'us-east-2', //Region of the bucket
+            'credentials' => array(
+                'key' => 'AKIA4NZLDOQGJT6PZ77C',
+                'secret'  => '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',
+            )
+        ]);
+
+
+
         $listProduct =  Product::all();
         foreach ($listProduct as $key) {
-            $key['image'] = env('APP_URL') . '/storage/app/public/' . $key['image'];
+            // $key['image'] = env('APP_URL') . '/storage/app/public/' . $key['image'];
+            //Get a command to GetObject
+            $cmd = $s3Client->getCommand('GetObject', [
+                'Bucket' => 'teacity-storage-image',
+                'Key'    => $key['image']
+            ]);
+
+            //The period of availability
+            $request = $s3Client->createPresignedRequest($cmd, '+10 minutes');
+
+            //Get the pre-signed URL
+            $signedUrl = (string) $request->getUri();
+            $key['image'] = $signedUrl;
         }
         return $listProduct;
     }
