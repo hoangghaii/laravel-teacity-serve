@@ -38,7 +38,7 @@ class ProductController extends Controller
         }
 
         // $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
-        $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
+        // $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
 
 
         // $resume = $request->file('image');
