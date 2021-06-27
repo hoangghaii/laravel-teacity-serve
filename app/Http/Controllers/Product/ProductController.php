@@ -39,7 +39,7 @@ class ProductController extends Controller
 
         // $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
         $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
-        $resume = $request->file('image');
+        // $resume = $request->file('image');
         // try {
         //     $s3Client->putObject(array(
         //         'Bucket' => 'teacity-storage-image',
@@ -54,7 +54,7 @@ class ProductController extends Controller
         // $product->image = $request->image;
         // $product->save();
         // return  response()->json($product);
-        return  $_FILES[$request->image];
+        return $resume;
     }
 
     public function index()
