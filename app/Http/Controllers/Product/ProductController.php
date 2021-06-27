@@ -71,20 +71,20 @@ class ProductController extends Controller
 
         $listProduct =  Product::all();
 
-        foreach ($listProduct as $key) {
-            //Get a command to GetObject
-            $cmd = $s3Client->getCommand('GetObject', [
-                'Bucket' => 'teacity-storage-image',
-                'Key'    => $key['image']
-            ]);
+        // foreach ($listProduct as $key) {
+        //     //Get a command to GetObject
+        //     $cmd = $s3Client->getCommand('GetObject', [
+        //         'Bucket' => 'teacity-storage-image',
+        //         'Key'    => $key['image']
+        //     ]);
 
-            //The period of availability
-            $request = $s3Client->createPresignedRequest($cmd, '+10 minutes');
+        //     //The period of availability
+        //     $request = $s3Client->createPresignedRequest($cmd, '+10 minutes');
 
-            //Get the pre-signed URL
-            $signedUrl = (string) $request->getUri();
-            $key['image'] = $signedUrl;
-        }
+        //     //Get the pre-signed URL
+        //     $signedUrl = (string) $request->getUri();
+        //     $key['image'] = $signedUrl;
+        // }
         return $listProduct;
     }
 
