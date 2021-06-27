@@ -42,19 +42,19 @@ class ProductController extends Controller
 
 
         // $resume = $request->file('image');
-        try {
-            $s3Client->putObject([
-                'Bucket' => 'teacity-storage-image',
-                'Key' =>  $resume,
-            ]);
-        } catch (S3Exception $e) {
-            // Catch an S3 specific exception.
-            echo $e->getMessage();
-        }
+        // try {
+        //     $s3Client->putObject([
+        //         'Bucket' => 'teacity-storage-image',
+        //         'Key' =>  $resume,
+        //     ]);
+        // } catch (S3Exception $e) {
+        //     // Catch an S3 specific exception.
+        //     echo $e->getMessage();
+        // }
 
-        $product = new Product($request->all());
-        $product->image = $resume;
-        $product->save();
+        // $product = new Product($request->all());
+        // $product->image = $resume;
+        // $product->save();
         // return response()->json($product);
         return $request->image;
     }
