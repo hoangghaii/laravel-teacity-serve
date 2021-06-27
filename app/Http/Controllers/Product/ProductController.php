@@ -42,7 +42,7 @@ class ProductController extends Controller
         try {
             $s3Client->putObject(array(
                 'Bucket' => 'teacity-storage-image',
-                'Key' =>  $resume,
+                'Key' =>  $request->image,
             ));
         } catch (S3Exception $e) {
             // Catch an S3 specific exception.
@@ -50,7 +50,7 @@ class ProductController extends Controller
         }
 
         $product = new Product($request->all());
-        $product->image = $resume;
+        $product->image = $request->image;
         $product->save();
         return  response()->json($product);
     }
