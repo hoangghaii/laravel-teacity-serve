@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Order;
 use App\Model\OrderDetail;
-use App\model\Product;
+use App\Model\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -36,8 +36,8 @@ class OrderController extends Controller
                 'address' =>   $request->address,
                 'name' => $request->name,
                 'phone' => $request->phone,
-                'discount'=> 0,
-                'status'=>0
+                'discount' => 0,
+                'status' => 0
             ];
             $order = Order::create($order_request);
             $listOrderDetail = [];
@@ -61,7 +61,7 @@ class OrderController extends Controller
     public function update(Request $request)
     {
         return DB::transaction(function () use ($request) {
-            OrderDetail::where('order_id',$request->id)->delete();
+            OrderDetail::where('order_id', $request->id)->delete();
             $order = Order::find($request->id);
             $order->total_price =  $request->total_price;
             $order->user_id =  $request->user_id;
@@ -87,7 +87,7 @@ class OrderController extends Controller
     }
     public function getById(Request $request)
     {
-         $order = Order::find($request->id);
+        $order = Order::find($request->id);
         $order2 = [
             'total_price' => $order->total_price,
             'discount' => $order->discount,
@@ -95,11 +95,11 @@ class OrderController extends Controller
             'address' =>   $order->address,
             'name' => $order->name,
             'phone' => $order->phone,
-            'discount'=> $order->discount,
-            'status'=>$order->status,
+            'discount' => $order->discount,
+            'status' => $order->status,
             'order_detail' => []
         ];
-        $listDetails = OrderDetail::where('order_id',$order->id)->get();
+        $listDetails = OrderDetail::where('order_id', $order->id)->get();
         $list = [];
         foreach ($listDetails as $key) {
             $item = (object)[
@@ -107,9 +107,9 @@ class OrderController extends Controller
                 'product_id' => $key->product_id,
                 'count' => $key->count,
                 'order_id' => $key->order_id,
-                'product'=>Product::find( $key->product_id)
+                'product' => Product::find($key->product_id)
             ];
-            array_push($list,$item);
+            array_push($list, $item);
         }
         $order2['order_detail'] = $list;
         return $order2;

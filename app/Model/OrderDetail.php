@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\model\Product;
+use App\Model\Product;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderDetail extends Model
@@ -23,7 +23,7 @@ class OrderDetail extends Model
     ];
     public function product()
     {
-        return $this->hasOne(Product::class,'id');
+        return $this->hasOne(Product::class, 'id');
     }
     public function getproductAttribute()
     {
