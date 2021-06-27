@@ -57,7 +57,8 @@ class ProductController extends Controller
         // $product->save();
         // return response()->json($product);
         $base64_str = substr($request->image, strpos($request->image, ",") + 1);
-        return base64_decode($base64_str);
+        // return base64_decode($base64_str);
+        return $request;
     }
 
     public function index()
