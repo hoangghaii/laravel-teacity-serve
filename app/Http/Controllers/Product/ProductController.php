@@ -41,7 +41,7 @@ class ProductController extends Controller
 
         $s3Client->putObject(array(
             'Bucket' => 'teacity-storage-image',
-            'Key' =>  $resume,
+            'Key' =>  $request->file('image'),
         ));
 
         // try {
@@ -55,7 +55,7 @@ class ProductController extends Controller
         // }
 
         $product = new Product($request->all());
-        $product->image = $resume;
+        $product->image = $request->file('image');
         $product->save();
         return  response()->json($product);
     }
