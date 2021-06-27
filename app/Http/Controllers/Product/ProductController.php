@@ -52,7 +52,8 @@ class ProductController extends Controller
         $product = new Product($request->all());
         $product->image = $request->image;
         $product->save();
-        return  response()->json($product);
+        // return  response()->json($product);
+        return $request->all();
     }
 
     public function index()
