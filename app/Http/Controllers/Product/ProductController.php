@@ -37,7 +37,8 @@ class ProductController extends Controller
             return response()->json(['error' => $validator->errors()], 404);
         }
 
-        // $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
+        $imageBase64 = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($request->file('image')));
+
         // $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
 
 
@@ -52,12 +53,10 @@ class ProductController extends Controller
         //     echo $e->getMessage();
         // }
 
-        // $product = new Product($request->all());
-        // $product->image = $resume;
-        // $product->save();
-        // return response()->json($product);
-
-        return 'data:image/jpeg;base64,' . base64_encode(file_get_contents($request->file('image')));
+        $product = new Product($request->all());
+        $product->image = $imageBase64;
+        $product->save();
+        return response()->json($product);
     }
 
     public function index()
