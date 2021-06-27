@@ -41,30 +41,30 @@ class ProductController extends Controller
 
         // $source = fopen('/path/to/large/file.zip', 'rb');
 
-        // $uploader = new ObjectUploader(
-        //     $s3Client,
-        //     'teacity-storage-image',
-        //     $resume,
-        //     $source
-        // );
-
-        // //Get a command to GetObject
-        //  $s3Client->putObject(array(
-        //     'Bucket'=>'teacity-storage-image',
-        //     'Key' =>  $resume,
-        //     'SourceFile' => 'source-filename-with-path',
-        //     'StorageClass' => 'Standard'
-        //   ));
+        $uploader = new ObjectUploader(
+            $s3Client,
+            'teacity-storage-image',
+            $resume
+        );
 
         try {
-            $s3Client->putObject(array(
-                'Bucket' => 'teacity-storage-image',
-                'Key' =>  $resume,
-            ));
+            $uploader->upload();
         } catch (S3Exception $e) {
             // Catch an S3 specific exception.
             echo $e->getMessage();
         }
+
+
+
+        // try {
+        //     $s3Client->putObject(array(
+        //         'Bucket' => 'teacity-storage-image',
+        //         'Key' =>  $resume,
+        //     ));
+        // } catch (S3Exception $e) {
+        //     // Catch an S3 specific exception.
+        //     echo $e->getMessage();
+        // }
 
 
 
