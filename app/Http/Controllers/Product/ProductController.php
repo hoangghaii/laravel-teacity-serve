@@ -58,11 +58,11 @@ class ProductController extends Controller
     public function index()
     {
         $s3Client = new S3Client([
-            'version'     => 'latest',
-            'region'      => 'us-east-1', //Region of the bucket
+            'version'     => '2021-06-26',
+            'region'      => 'us-east-2', //Region of the bucket
             'credentials' => array(
-                'key' => 'AKIA4NZLDOQGJT6PZ77C',
-                'secret'  => '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',
+                'key' => 'AKIA4NZLDOQGDVYJXUMV',
+                'secret'  => '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',
             )
         ]);
 
