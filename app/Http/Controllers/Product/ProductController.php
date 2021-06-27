@@ -45,7 +45,7 @@ class ProductController extends Controller
         // try {
         //     $s3Client->putObject([
         //         'Bucket' => 'teacity-storage-image',
-        //         'Key' =>  $request->image,
+        //         'Key' =>  $request->file('image'),
         //     ]);
         // } catch (S3Exception $e) {
         //     // Catch an S3 specific exception.
@@ -56,7 +56,7 @@ class ProductController extends Controller
         // $product->image = $request->image;
         // $product->save();
         // return  response()->json($product);
-        return $request->image;
+        return $request->file('image');
     }
 
     public function index()
