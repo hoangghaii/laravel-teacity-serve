@@ -6,6 +6,7 @@ require '../vendor/autoload.php';
 
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
+use Aws\S3\ObjectUploader;
 use Aws\Credentials\Credentials;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,13 +17,12 @@ class ProductController extends Controller
 {
     public function store(Request $request)
     {
+        $credentials = new Credentials('AKIA4NZLDOQGDVYJXUMV', 'wB9S8SjQFW+s6U8aYyMMvko9mOqgvoLgMRDU68QF');
+
         $s3Client = new S3Client([
             'version'     => 'latest',
-            'region'      => 'us-east-1', //Region of the bucket
-            'credentials' => array(
-                'key' => 'AKIA4NZLDOQGJT6PZ77C',
-                'secret'  => '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',
-            )
+            'region'      => 'us-east-2', //Region of the bucket
+            'credentials' => $credentials
         ]);
 
         $validator = Validator::make($request->all(), [
@@ -39,17 +39,35 @@ class ProductController extends Controller
 
         $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
 
-        //Get a command to GetObject
-        $cmd = $s3Client->getCommand('GetObject', [
-            'Bucket' => 'teacity-storage-image',
-            'Key'    => $resume
-        ]);
+        // $source = fopen('/path/to/large/file.zip', 'rb');
 
-        //The period of availability
-        $request = $s3Client->createPresignedRequest($cmd, '+10 minutes');
+        // $uploader = new ObjectUploader(
+        //     $s3Client,
+        //     'teacity-storage-image',
+        //     $resume,
+        //     $source
+        // );
 
-        //Get the pre-signed URL
-        $signedUrl = (string) $request->getUri();
+        // //Get a command to GetObject
+        //  $s3Client->putObject(array(
+        //     'Bucket'=>'teacity-storage-image',
+        //     'Key' =>  $resume,
+        //     'SourceFile' => 'source-filename-with-path',
+        //     'StorageClass' => 'Standard'
+        //   ));
+
+        try {
+            $s3Client->putObject(array(
+                'Bucket' => 'teacity-storage-image',
+                'Key' =>  $resume,
+                'StorageClass' => 'Standard'
+            ));
+        } catch (S3Exception $e) {
+            // Catch an S3 specific exception.
+            echo $e->getMessage();
+        }
+
+
 
         $product = new Product($request->all());
         $product->image = $resume;
@@ -64,10 +82,6 @@ class ProductController extends Controller
         $s3Client = new S3Client([
             'version'     => 'latest',
             'region'      => 'us-east-2', //Region of the bucket
-            // 'credentials' => array(
-            //     'key' => 'AKIA4NZLDOQGDVYJXUMV',
-            //     'secret'  => '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',
-            // )
             'credentials' => $credentials
         ]);
 
@@ -77,8 +91,7 @@ class ProductController extends Controller
             //Get a command to GetObject
             $cmd = $s3Client->getCommand('GetObject', [
                 'Bucket' => 'teacity-storage-image',
-                // 'Key'    => $key['image']
-                'Key'    => '182389320_1366042820428229_9066371826374264267_n.jpg'
+                'Key'    => $key['image']
             ]);
 
             //The period of availability
