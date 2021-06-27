@@ -60,7 +60,6 @@ class ProductController extends Controller
             $s3Client->putObject(array(
                 'Bucket' => 'teacity-storage-image',
                 'Key' =>  $resume,
-                'StorageClass' => 'Standard'
             ));
         } catch (S3Exception $e) {
             // Catch an S3 specific exception.
