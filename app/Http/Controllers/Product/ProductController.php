@@ -128,7 +128,7 @@ class ProductController extends Controller
         }
         $product =  Product::find($request->id);
 
-        $imageBase64 = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($product->file('image')));
+        $imageBase64 = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($request->file('image')));
 
         $product->description = $request->description;
         $product->name = $request->name;
