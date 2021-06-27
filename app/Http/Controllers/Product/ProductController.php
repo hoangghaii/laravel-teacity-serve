@@ -17,7 +17,7 @@ class ProductController extends Controller
     {
         $s3Client = new S3Client([
             'version'     => 'latest',
-            'region'      => 'us-east-2', //Region of the bucket
+            'region'      => 'us-east-1', //Region of the bucket
             'credentials' => array(
                 'key' => 'AKIA4NZLDOQGJT6PZ77C',
                 'secret'  => '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',
@@ -59,7 +59,7 @@ class ProductController extends Controller
     {
         $s3Client = new S3Client([
             'version'     => 'latest',
-            'region'      => 'us-east-2', //Region of the bucket
+            'region'      => 'us-east-1', //Region of the bucket
             'credentials' => array(
                 'key' => 'AKIA4NZLDOQGJT6PZ77C',
                 'secret'  => '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',
