@@ -58,6 +58,7 @@ class ProductController extends Controller
     public function index()
     {
         $s3Client = new S3Client([
+            'profile'     => 'default',
             'version'     => 'latest',
             'region'      => 'us-east-2', //Region of the bucket
             'credentials' => array(
@@ -66,11 +67,9 @@ class ProductController extends Controller
             )
         ]);
 
-
-
         $listProduct =  Product::all();
+
         foreach ($listProduct as $key) {
-            // $key['image'] = env('APP_URL') . '/storage/app/public/' . $key['image'];
             //Get a command to GetObject
             $cmd = $s3Client->getCommand('GetObject', [
                 'Bucket' => 'teacity-storage-image',
