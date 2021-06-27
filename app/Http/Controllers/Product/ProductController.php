@@ -6,6 +6,7 @@ require '../vendor/autoload.php';
 
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
+use Aws\Credentials\Credentials;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Product;
@@ -55,15 +56,19 @@ class ProductController extends Controller
         $product->save();
         return  response()->json($product);
     }
+
     public function index()
     {
+        $credentials = new Credentials('AKIA4NZLDOQGDVYJXUMV', 'wB9S8SjQFW+s6U8aYyMMvko9mOqgvoLgMRDU68QF');
+
         $s3Client = new S3Client([
-            'version'     => '2021-06-26',
+            'version'     => 'latest',
             'region'      => 'us-east-2', //Region of the bucket
-            'credentials' => array(
-                'key' => 'AKIA4NZLDOQGDVYJXUMV',
-                'secret'  => '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',
-            )
+            // 'credentials' => array(
+            //     'key' => 'AKIA4NZLDOQGDVYJXUMV',
+            //     'secret'  => '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',
+            // )
+            'credentials' => $credentials
         ]);
 
         $listProduct =  Product::all();
