@@ -36,9 +36,9 @@ class ProductController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 404);
         }
-        $resume = $request->file('image');
 
-        // $request->file('image')->move(base_path() . '/storage/app/public/', $resume);
+        $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
+
         //Get a command to GetObject
         $cmd = $s3Client->getCommand('GetObject', [
             'Bucket' => 'teacity-storage-image',
@@ -77,7 +77,8 @@ class ProductController extends Controller
             //Get a command to GetObject
             $cmd = $s3Client->getCommand('GetObject', [
                 'Bucket' => 'teacity-storage-image',
-                'Key'    => $key['image']
+                // 'Key'    => $key['image']
+                'Key'    => '182389320_1366042820428229_9066371826374264267_n.jpg'
             ]);
 
             //The period of availability
