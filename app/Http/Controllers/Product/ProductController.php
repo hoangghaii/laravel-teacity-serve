@@ -58,7 +58,6 @@ class ProductController extends Controller
     public function index()
     {
         $s3Client = new S3Client([
-            'profile'     => 'default',
             'version'     => 'latest',
             'region'      => 'us-east-2', //Region of the bucket
             'credentials' => array(
@@ -85,12 +84,14 @@ class ProductController extends Controller
         }
         return $listProduct;
     }
+
     public function destroy(Request $request)
     {
         $product =  Product::find($request->id);
         unlink(storage_path('app/public/' . $product->image));
         return response()->json($product->delete());
     }
+
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
