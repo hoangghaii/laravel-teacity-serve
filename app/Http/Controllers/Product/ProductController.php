@@ -17,13 +17,13 @@ class ProductController extends Controller
 {
     public function store(Request $request)
     {
-        $credentials = new Credentials('AKIA4NZLDOQGDVYJXUMV', 'wB9S8SjQFW+s6U8aYyMMvko9mOqgvoLgMRDU68QF');
+        // $credentials = new Credentials('AKIA4NZLDOQGDVYJXUMV', 'wB9S8SjQFW+s6U8aYyMMvko9mOqgvoLgMRDU68QF');
 
-        $s3Client = new S3Client([
-            'version'     => 'latest',
-            'region'      => 'us-east-2', //Region of the bucket
-            'credentials' => $credentials
-        ]);
+        // $s3Client = new S3Client([
+        //     'version'     => 'latest',
+        //     'region'      => 'us-east-2', //Region of the bucket
+        //     'credentials' => $credentials
+        // ]);
 
         $validator = Validator::make($request->all(), [
             'description' => 'required|string',
@@ -61,13 +61,13 @@ class ProductController extends Controller
 
     public function index()
     {
-        $credentials = new Credentials('AKIA4NZLDOQGDVYJXUMV', 'wB9S8SjQFW+s6U8aYyMMvko9mOqgvoLgMRDU68QF');
+        // $credentials = new Credentials('AKIA4NZLDOQGDVYJXUMV', 'wB9S8SjQFW+s6U8aYyMMvko9mOqgvoLgMRDU68QF');
 
-        $s3Client = new S3Client([
-            'version'     => 'latest',
-            'region'      => 'us-east-2', //Region of the bucket
-            'credentials' => $credentials
-        ]);
+        // $s3Client = new S3Client([
+        //     'version'     => 'latest',
+        //     'region'      => 'us-east-2', //Region of the bucket
+        //     'credentials' => $credentials
+        // ]);
 
         $listProduct =  Product::all();
 
@@ -92,23 +92,23 @@ class ProductController extends Controller
     {
         $product =  Product::find($request->id);
 
-        $credentials = new Credentials('AKIA4NZLDOQGDVYJXUMV', 'wB9S8SjQFW+s6U8aYyMMvko9mOqgvoLgMRDU68QF');
+        // $credentials = new Credentials('AKIA4NZLDOQGDVYJXUMV', 'wB9S8SjQFW+s6U8aYyMMvko9mOqgvoLgMRDU68QF');
 
-        $s3Client = new S3Client([
-            'version'     => 'latest',
-            'region'      => 'us-east-2', //Region of the bucket
-            'credentials' => $credentials
-        ]);
+        // $s3Client = new S3Client([
+        //     'version'     => 'latest',
+        //     'region'      => 'us-east-2', //Region of the bucket
+        //     'credentials' => $credentials
+        // ]);
 
-        try {
-            $s3Client->deleteObject([
-                'Bucket' => 'teacity-storage-image',
-                'Key' => $product->image,
-            ]);
-        } catch (S3Exception $e) {
-            // Catch an S3 specific exception.
-            echo $e->getMessage();
-        }
+        // try {
+        //     $s3Client->deleteObject([
+        //         'Bucket' => 'teacity-storage-image',
+        //         'Key' => $product->image,
+        //     ]);
+        // } catch (S3Exception $e) {
+        //     // Catch an S3 specific exception.
+        //     echo $e->getMessage();
+        // }
 
         return response()->json($product->delete());
     }
@@ -127,16 +127,14 @@ class ProductController extends Controller
             return response()->json(['error' => $validator->errors()], 404);
         }
         $product =  Product::find($request->id);
-        unlink(storage_path('app/public/' . $product->image));
 
-        $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move(base_path() . '/storage/app/public/', $resume);
+        $imageBase64 = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($product->file('image')));
 
         $product->description = $request->description;
         $product->name = $request->name;
         $product->price = $request->price;
         $product->size = $request->size;
-        $product->image = $resume;
+        $product->image = $imageBase64;
         $product->category_id = $request->category_id;
         return response()->json($product->save());
     }
