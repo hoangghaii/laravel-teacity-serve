@@ -39,12 +39,14 @@ class ProductController extends Controller
 
         // $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
         $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
+
+
         // $resume = $request->file('image');
         // try {
-        //     $s3Client->putObject(array(
+        //     $s3Client->putObject([
         //         'Bucket' => 'teacity-storage-image',
         //         'Key' =>  $request->image,
-        //     ));
+        //     ]);
         // } catch (S3Exception $e) {
         //     // Catch an S3 specific exception.
         //     echo $e->getMessage();
@@ -54,7 +56,7 @@ class ProductController extends Controller
         // $product->image = $request->image;
         // $product->save();
         // return  response()->json($product);
-        return $resume;
+        return $$request->image;
     }
 
     public function index()
