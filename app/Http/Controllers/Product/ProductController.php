@@ -39,23 +39,18 @@ class ProductController extends Controller
 
         $resume = time() . '.' .  $request->file('image')->getClientOriginalExtension();
 
-        $s3Client->putObject(array(
-            'Bucket' => 'teacity-storage-image',
-            'Key' =>  $request->file('image'),
-        ));
-
-        // try {
-        //     $s3Client->putObject(array(
-        //         'Bucket' => 'teacity-storage-image',
-        //         'Key' =>  $resume,
-        //     ));
-        // } catch (S3Exception $e) {
-        //     // Catch an S3 specific exception.
-        //     echo $e->getMessage();
-        // }
+        try {
+            $s3Client->putObject(array(
+                'Bucket' => 'teacity-storage-image',
+                'Key' =>  $resume,
+            ));
+        } catch (S3Exception $e) {
+            // Catch an S3 specific exception.
+            echo $e->getMessage();
+        }
 
         $product = new Product($request->all());
-        $product->image = $request->file('image');
+        $product->image = $resume;
         $product->save();
         return  response()->json($product);
     }
@@ -92,7 +87,25 @@ class ProductController extends Controller
     public function destroy(Request $request)
     {
         $product =  Product::find($request->id);
-        unlink(storage_path('app/public/' . $product->image));
+
+        $credentials = new Credentials('AKIA4NZLDOQGDVYJXUMV', 'wB9S8SjQFW+s6U8aYyMMvko9mOqgvoLgMRDU68QF');
+
+        $s3Client = new S3Client([
+            'version'     => 'latest',
+            'region'      => 'us-east-2', //Region of the bucket
+            'credentials' => $credentials
+        ]);
+
+        try {
+            $s3Client->deleteObject([
+                'Bucket' => 'teacity-storage-image',
+                'Key' => $product->image,
+            ]);
+        } catch (S3Exception $e) {
+            // Catch an S3 specific exception.
+            echo $e->getMessage();
+        }
+
         return response()->json($product->delete());
     }
 
