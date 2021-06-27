@@ -56,9 +56,9 @@ class ProductController extends Controller
         // $product->image = $resume;
         // $product->save();
         // return response()->json($product);
-        $base64_str = substr(file_get_contents($request->file('image')), strpos(file_get_contents($request->file('image')), ",") + 1);
-        return base64_decode($base64_str);
+
         // return 'data:image/jpeg;base64,' . base64_encode(file_get_contents($request->file('image')));
+        return file_get_contents($request->file('image'));
     }
 
     public function index()
