@@ -9,7 +9,7 @@ class Order extends Model
     protected $table = 'order';
     protected $appends = ['order_detail'];
     protected $fillable = [
-        'user_id', 'total_price', 'address', 'name', 'phone','status', 'discount', 'created_at', 'updated_at'
+        'user_id', 'total_price', 'address', 'name', 'phone', 'status', 'discount', 'created_at', 'updated_at'
     ];
 
     /**
@@ -22,7 +22,7 @@ class Order extends Model
     ];
     public function order_detail()
     {
-        return $this->hasMany('App\model\OrderDetail', 'order_id', 'id');
+        return $this->hasMany('App\Model\OrderDetail', 'order_id', 'id');
     }
     public function getOrderDetailAttribute()
     {
